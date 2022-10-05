@@ -1,8 +1,0 @@
-## Interface: 20501
-## Author: Mageiden
-## Title: TotemPredictor
-## DefaultState: enabled
-## SavedVariables: TotemPredictorDB
-
-TotemPredictor.lua
-config.lua
