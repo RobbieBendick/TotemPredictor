@@ -6,6 +6,9 @@ core.Config = {};
 Config = core.Config;
 local TPConfig;
 
+
+local totemPredictor;
+
 local totems = {
     ["earth"] = {
         ["Stoneskin Totem"] = 8155,
@@ -95,7 +98,7 @@ function Config:CreateMenu()
         -- set marker ID & dropdown info
         TotemPredictorDB[markerIDString] = {self:GetID(), totems[totemSchool][self.value] or nil};
         Config:SetDropdownInfo(frame, self.value, self:GetID(), iconFrame);
-        iconFrame:SetTexture(GetSpellTexture(TotemPredictorDB[markerIDString][2]));
+        iconFrame:SetTexture(GetSpellTexture(TotemPredictorDB[markerIDString][2]) or nil);
     end
 
     -- First Dropdown
@@ -133,4 +136,20 @@ function Config:CreateMenu()
 
     TPConfig:Hide();
     return InterfaceOptions_AddCategory(TPConfig);
+end
+
+function Config:Player_Login()
+    if not TotemPredictorDB then
+        TotemPredictorDB = {};                     --clickID, spellID
+        TotemPredictorDB["prefferedEarthTotem"] = {3, totems.earth["Stoneskin Totem"]};
+        TotemPredictorDB["prefferedWaterTotem"] = {2, totems.water["Mana Spring Totem"]};
+    end
+    DEFAULT_CHAT_FRAME:AddMessage(
+        "|cff33ff99" ..
+        "TotemPredictor" ..
+        "|r by " ..
+        "|cff69CCF0" ..
+        GetAddOnMetadata("TotemPredictor", "Author") .. 
+        "|r. Type |cff33ff99/tp|r for additional options.");
+    Config:CreateMenu()
 end

@@ -68,12 +68,12 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
     if TP:NumberOfTrueValuesInFearTable() > 0 then
         SetMultiCastSpell(122, tremor);
     else
-        SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
+        SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2] or stoneskin);
     end
     if enemyHasDiseaseOrPoison then
         SetMultiCastSpell(123, cleansing);
     else
-        SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2]);
+        SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2] or manaSpring);
     end
 end
 
@@ -104,6 +104,7 @@ function TP:Player_Login()
         TotemPredictorDB["prefferedEarthTotem"] = {3, nil};
         TotemPredictorDB["prefferedWaterTotem"] = {2, nil};
     end
+    core.Config:CreateMenu()
     DEFAULT_CHAT_FRAME:AddMessage(
         "|cff33ff99" ..
         "TotemPredictor" ..
@@ -111,7 +112,6 @@ function TP:Player_Login()
         "|cff69CCF0" ..
         GetAddOnMetadata("TotemPredictor", "Author") .. "|r loaded.");
 
-    core.Config:CreateMenu()
 end
 
 local addonLoadedFrame = CreateFrame("Frame");
