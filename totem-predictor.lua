@@ -113,8 +113,10 @@ function TP:Player_Login()
         "TotemPredictor" ..
         "|r by " ..
         "|cff69CCF0" ..
-        GetAddOnMetadata("totem-predictor", "Author") .. "|r loaded.");
+        GetAddOnMetadata("TotemPredictor", "Author") .. "|r loaded.");
     core.Config:CreateMenu()
+
+
 end
 
 local addonLoadedFrame = CreateFrame("Frame");

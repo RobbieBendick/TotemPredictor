@@ -2,6 +2,7 @@
 ## Author: Mageiden
 ## Title: TotemPredictor
 ## DefaultState: enabled
+## SavedVariables: TotemPredictorDB
 
-totem-predictor.lua
+TotemPredictor.lua
 config.lua
