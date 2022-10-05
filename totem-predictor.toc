@@ -4,3 +4,4 @@
 ## DefaultState: enabled
 
 totem-predictor.lua
+config.lua
