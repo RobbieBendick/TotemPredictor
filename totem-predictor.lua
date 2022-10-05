@@ -1,10 +1,11 @@
 local _, core = ...;
 --[[ 
     SetMultiCastSpell
-               fire, earth, water, air
-    elements - {133, 134, 135, 136},
-    ancestors - {137, 138, 139, 140}
-    spirits - {141, 142, 143, 144},
+    ------------------------------
+              fire, earth water air
+    Elements  121,  122,  123, 124
+    Ancestors 125,	126,  127, 128
+    Spirits   129,  130,  131, 132
 --]]
 
 
@@ -27,10 +28,11 @@ local diseaseOrPoisonClasses = {
     "ROGUE",
     "DEATHKNIGHT",
 };
-
+local totemSets = {
+    ['elements'] = {}
+}
 local tremor, stoneskin, cleansing, manaSpring = 8143, 8071, 8170, 25570;
 local enemyHasDiseaseOrPoison = false;
-
 
 function NumberOfTrueValuesInFearTable()
     local c = 0;
@@ -47,7 +49,7 @@ function CheckEnemyTeamClassesAndSetTotemBar(self)
         local _, class = UnitClass("arena" .. i);
         for k, v in pairs(fearClasses) do
             if class == k then
-                fearClasses[class] = true;
+                fearClasses[k] = true;
             end
         end
         for j = 1, #diseaseOrPoisonClasses do
@@ -56,14 +58,14 @@ function CheckEnemyTeamClassesAndSetTotemBar(self)
             end
         end
         if NumberOfTrueValuesInFearTable() > 0 then
-            SetMultiCastSpell(134, tremor);
+            SetMultiCastSpell(122, tremor);
         else
-            SetMultiCastSpell(134, stoneskin);
+            SetMultiCastSpell(122, stoneskin);
         end
         if enemyHasDiseaseOrPoison then
-            SetMultiCastSpell(135, cleansing);
+            SetMultiCastSpell(123, cleansing);
         else
-            SetMultiCastSpell(135, manaSpring);
+            SetMultiCastSpell(123, manaSpring);
         end
     end
 end
