@@ -15,7 +15,6 @@ local eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) Player_Login(self) end,
     ["ARENA_OPPONENT_UPDATE"] = function(self, ...) CheckEnemyTeamClassesAndSetTotemBar(self) end,
     ["ZONE_CHANGED_NEW_AREA"] = function(self) Reset(self) end,
-    -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) WarriorFearHandler(selWarf, ...) end,
 }
 
 local fearClasses = {
@@ -28,9 +27,6 @@ local diseaseOrPoisonClasses = {
     "ROGUE",
     "DEATHKNIGHT",
 };
-local totemSets = {
-    ['elements'] = {}
-}
 local tremor, stoneskin, cleansing, manaSpring = 8143, 8071, 8170, 25570;
 local enemyHasDiseaseOrPoison = false;
 
