@@ -9,7 +9,7 @@ local TPConfig;
 
 local totemPredictor;
 
-local totems = {
+core.totems = {
     ["earth"] = {
         ["Stoneskin Totem"] = 8155,
         ["Strength of Earth Totem"] = 58643,
@@ -89,14 +89,14 @@ function Config:CreateMenu()
             return UIDropDownMenu_AddButton(info);
         end
 
-        for i, v in pairs(totems[totemFamily]) do
+        for i, v in pairs(core.totems[totemFamily]) do
             AddTotem(i, false, v);
         end
     end
 
     function Config:CreateTotemDropdownOnClick(self, markerIDString, frame, iconFrame, totemSchool)
         -- set marker ID & dropdown info
-        TotemPredictorDB[markerIDString] = {self:GetID(), totems[totemSchool][self.value] or nil};
+        TotemPredictorDB[markerIDString] = {self:GetID(), core.totems[totemSchool][self.value] or nil};
         Config:SetDropdownInfo(frame, self.value, self:GetID(), iconFrame);
         iconFrame:SetTexture(GetSpellTexture(TotemPredictorDB[markerIDString][2]) or nil);
     end
@@ -110,8 +110,8 @@ function Config:CreateMenu()
         return Config:CreateDropdownMenu(Preferred_Earth_Totem_DropDown_OnClick, "earth");
     end
 
-    TPConfig.dropDownTitle = self:CreateDropdownTitle(TPConfig.title, "Preferred Earth Totem");
-    TPConfig.dropDownTitle:SetPoint("CENTER", TPConfig.title, "CENTER", 15, -35)
+    TPConfig.dropDownTitle = self:CreateDropdownTitle(TPConfig.title, "Replace Tremor Totem When Needed");
+    TPConfig.dropDownTitle:SetPoint("CENTER", TPConfig.title, "RIGHT", -10, -35)
     TPConfig.dropDown = self:CreateDropdown(TPConfig.dropDownTitle, "TotemPredictorDropDown");
     TPConfig.dropDownIcon = self:CreateDropdownIcon(TPConfig.dropDown);
 
@@ -125,7 +125,7 @@ function Config:CreateMenu()
     end
 
 
-    TPConfig.dropDownTitleTwo = self:CreateDropdownTitle(TPConfig.dropDown, "Preferred Water Totem");
+    TPConfig.dropDownTitleTwo = self:CreateDropdownTitle(TPConfig.dropDown, "Replace Cleansing Totem When Needed");
     TPConfig.dropDownTwo = self:CreateDropdown(TPConfig.dropDownTitleTwo, "TotemPredictorDropDownTwo");
     TPConfig.dropDownIconTwo = self:CreateDropdownIcon(TPConfig.dropDownTwo);
 
@@ -141,8 +141,8 @@ end
 function Config:Player_Login()
     if not TotemPredictorDB then
         TotemPredictorDB = {};                     --clickID, spellID
-        TotemPredictorDB["prefferedEarthTotem"] = {3, totems.earth["Stoneskin Totem"]};
-        TotemPredictorDB["prefferedWaterTotem"] = {2, totems.water["Mana Spring Totem"]};
+        TotemPredictorDB["prefferedEarthTotem"] = {3, core.totems.earth["Stoneskin Totem"]};
+        TotemPredictorDB["prefferedWaterTotem"] = {2, core.totems.water["Mana Spring Totem"]};
     end
     DEFAULT_CHAT_FRAME:AddMessage(
         "|cff33ff99" ..

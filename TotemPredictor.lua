@@ -6,14 +6,14 @@ TP = core.TP;
     SetMultiCastSpell
     ------------------------------
              fire, earth, water, air
-    Elements  121,  122,  123, 124
-    Ancestors 125,	126,  127, 128
-    Spirits   129,  130,  131, 132
+    Elements  121,  122,  123,  124
+    Ancestors 125,	126,  127,  128
+    Spirits   129,  130,  131,  132
 --]]
 
 -- local warriorFearTimer;
-local eventHandlerTable = {
-    ["PLAYER_LOGIN"] = function(self) TP:Player_Login(self) end,
+eventHandlerTable = {
+    ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
     ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSetTotemBar(self) end,
     -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
     ["UPDATE_BATTLEFIELD_SCORE"] = function(self) TP:UpdateScore(self) end,
@@ -45,13 +45,16 @@ function TP:NumberOfTrueValuesInFearTable()
 end
 
 function TP:UpdateScore()
-    if warriorFearTimer and not warriorFearTimer:IsCancelled() then
-        warriorFearTimer:Cancel();
-    end
+    -- if warriorFearTimer and not warriorFearTimer:IsCancelled() then
+    --     warriorFearTimer:Cancel();
+    -- end
     TP:Reset();
 end
 
 function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
+    local _, instanceType = IsInInstance();
+
+    if instanceType ~= "arena" then return end
     for i = 1, 5 do
         local _, class = UnitClass("arena" .. i);
         for k, v in pairs(fearClasses) do
@@ -68,12 +71,12 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
     if TP:NumberOfTrueValuesInFearTable() > 0 then
         SetMultiCastSpell(122, tremor);
     else
-        SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2] or stoneskin);
+        SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
     end
     if enemyHasDiseaseOrPoison then
         SetMultiCastSpell(123, cleansing);
     else
-        SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2] or manaSpring);
+        SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2]);
     end
 end
 
@@ -98,21 +101,6 @@ end
 --     end
 -- end
 
-function TP:Player_Login()
-    if not TotemPredictorDB then
-        TotemPredictorDB = {};                --clickID, spellID
-        TotemPredictorDB["prefferedEarthTotem"] = {3, nil};
-        TotemPredictorDB["prefferedWaterTotem"] = {2, nil};
-    end
-    core.Config:CreateMenu()
-    DEFAULT_CHAT_FRAME:AddMessage(
-        "|cff33ff99" ..
-        "TotemPredictor" ..
-        "|r by " ..
-        "|cff69CCF0" ..
-        GetAddOnMetadata("TotemPredictor", "Author") .. "|r loaded.");
-
-end
 
 local addonLoadedFrame = CreateFrame("Frame");
 addonLoadedFrame:RegisterEvent("ADDON_LOADED");
