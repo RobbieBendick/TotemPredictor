@@ -6,9 +6,9 @@ TP = core.TP;
     SetMultiCastSpell
     ------------------------------
              fire, earth, water, air
-    Elements  121,  122,  123,  124
-    Ancestors 125,	126,  127,  128
-    Spirits   129,  130,  131,  132
+    Elements  121,  122,  123, 124
+    Ancestors 125,	126,  127, 128
+    Spirits   129,  130,  131, 132
 --]]
 
 -- local warriorFearTimer;
