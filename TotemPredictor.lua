@@ -25,18 +25,17 @@ local fearClasses = {
 }
 
 local diseaseOrPoisonClasses = {
-    "ROGUE",
-    "DEATHKNIGHT",
+    ["ROGUE"] = false,
+    ["DEATHKNIGHT"] = false,
+    ["HUNTER"] = false,
 };
-local enemyHasDiseaseOrPoison = false;
 
 local tremor, stoneskin, cleansing, manaSpring = 8143, 8071, 8170, 25570;
 
 
-
-function TP:NumberOfTrueValuesInFearTable()
+function TP:NumberOfTrueValuesInTable(t)
     local c = 0;
-    for i, v in pairs(fearClasses) do
+    for _, v in pairs(t) do
         if v then
             c = c + 1;
         end
@@ -57,23 +56,23 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
     if instanceType ~= "arena" then return end
     for i = 1, 5 do
         local _, class = UnitClass("arena" .. i);
-        for k, v in pairs(fearClasses) do
+        for k in pairs(fearClasses) do
             if class == k then
                 fearClasses[k] = true;
             end
         end
-        for j = 1, #diseaseOrPoisonClasses do
-            if class == diseaseOrPoisonClasses[j] then
-                enemyHasDiseaseOrPoison = true;
+        for k in pairs(diseaseOrPoisonClasses) do
+            if class == k then
+                diseaseOrPoisonClasses[k] = true;
             end
         end
     end
-    if TP:NumberOfTrueValuesInFearTable() > 0 then
+    if TP:NumberOfTrueValuesInTable(fearClasses) > 0 then
         SetMultiCastSpell(122, tremor);
     else
         SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
     end
-    if enemyHasDiseaseOrPoison then
+    if TP:NumberOfTrueValuesInTable(diseaseOrPoisonClasses) > 0 then
         SetMultiCastSpell(123, cleansing);
     else
         SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2]);
@@ -81,8 +80,10 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
 end
 
 function TP:Reset(self)
-    enemyHasDiseaseOrPoison = false;
-    for i, _ in pairs(fearClasses) do
+    for i in pairs(diseaseOrPoisonClasses) do
+        diseaseOrPoisonClasses[i] = false;
+    end
+    for i in pairs(fearClasses) do
         fearClasses[i] = false;
     end
 end
