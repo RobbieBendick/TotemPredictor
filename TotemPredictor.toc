@@ -4,5 +4,5 @@
 ## DefaultState: enabled
 ## SavedVariables: TotemPredictorDB
 
-TotemPredictor.lua
 config.lua
+TotemPredictor.lua

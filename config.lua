@@ -8,8 +8,8 @@ local TPConfig;
 
 core.totems = {
     ["earth"] = {
-        ["Stoneskin Totem"] = 8155,
-        ["Strength of Earth Totem"] = 58643,
+        ["Stoneskin Totem"] = 58753,
+        ["Strength of Earth Totem"] = 65991,
         ["Stoneclaw Totem"] = 58582,
         ["Earthbind Totem"] = 2484,
     },
@@ -144,12 +144,13 @@ function Config:Player_Login()
     end
     DEFAULT_CHAT_FRAME:AddMessage(
         "|cff33ff99" ..
-        "TotemPredictor" ..
+        TPConfig.name ..
         "|r by " ..
         "|cff69CCF0" ..
         GetAddOnMetadata(TPConfig.name, "Author") ..
         "|r. Type |cff33ff99 " ..
-        SLASH_TOTEMPREDICTOR1 .. "|r
-        for additional options.");
+        SLASH_TOTEMPREDICTOR1 ..
+        "|r for additional options."
+    );
     Config:CreateMenu()
 end

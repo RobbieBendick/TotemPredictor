@@ -4,11 +4,12 @@ core.TP = {};
 TP = core.TP;
 --[[ 
     SetMultiCastSpell
-    ------------------------------
+    ------------------------------------
              fire, earth, water, air
     Elements  121,  122,  123, 124
     Ancestors 125,	126,  127, 128
     Spirits   129,  130,  131, 132
+    ------------------------------------
 --]]
 
 -- local warriorFearTimer;
@@ -30,10 +31,10 @@ local diseaseOrPoisonClasses = {
     ["HUNTER"] = false,
 };
 
-local tremor, stoneskin, cleansing, manaSpring = 8143, 8071, 8170, 25570;
+local tremor, stoneskin, cleansing, manaSpring = 8143, 58753, 8170, 58774;
 
 
-function TP:NumberOfTrueValuesInTable(t)
+function TP:NumberOfTrueValues(t)
     local c = 0;
     for _, v in pairs(t) do
         if v then
@@ -52,8 +53,8 @@ end
 
 function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
     local _, instanceType = IsInInstance();
-
     if instanceType ~= "arena" then return end
+
     for i = 1, 5 do
         local _, class = UnitClass("arena" .. i);
         for k in pairs(fearClasses) do
@@ -67,12 +68,12 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
             end
         end
     end
-    if TP:NumberOfTrueValuesInTable(fearClasses) > 0 then
+    if TP:NumberOfTrueValues(fearClasses) > 0 then
         SetMultiCastSpell(122, tremor);
     else
         SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
     end
-    if TP:NumberOfTrueValuesInTable(diseaseOrPoisonClasses) > 0 then
+    if TP:NumberOfTrueValues(diseaseOrPoisonClasses) > 0 then
         SetMultiCastSpell(123, cleansing);
     else
         SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2]);
@@ -93,7 +94,7 @@ end
 --     local intimShout = 5246;
 --     if spellID == intimShout and not UnitIsFriend(caster) then
 --         -- team only has 1 fear
---         if TP:NumberOfTrueValuesInFearTable() < 2 then
+--         if TP:NumberOfTrueValuesInTable(fearClasses) < 2 then
 --             SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
 --             warriorFearTimer = C_Timer.NewTimer(120, function()
 --                 SetMultiCastSpell(122, tremor);
