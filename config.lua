@@ -9,7 +9,7 @@ local TPConfig;
 core.totems = {
     ["earth"] = {
         ["Stoneskin Totem"] = 58753,
-        ["Strength of Earth Totem"] = 65991,
+        ["Strength of Earth Totem"] = 58643,
         ["Stoneclaw Totem"] = 58582,
         ["Earthbind Totem"] = 2484,
     },

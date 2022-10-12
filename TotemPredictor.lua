@@ -19,6 +19,8 @@ eventHandlerTable = {
     -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
     ["UPDATE_BATTLEFIELD_SCORE"] = function(self) TP:UpdateScore(self) end,
 }
+
+
 local fearClasses = {
     ["WARRIOR"] = false,
     ["WARLOCK"] = false,
