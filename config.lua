@@ -142,6 +142,7 @@ function Config:Player_Login()
         TotemPredictorDB["prefferedEarthTotem"] = { 3, core.totems.earth["Stoneskin Totem"] };
         TotemPredictorDB["prefferedWaterTotem"] = { 2, core.totems.water["Mana Spring Totem"] };
     end
+    Config:CreateMenu()
     DEFAULT_CHAT_FRAME:AddMessage(
         "|cff33ff99" ..
         TPConfig.name ..
@@ -152,5 +153,4 @@ function Config:Player_Login()
         SLASH_TOTEMPREDICTOR1 ..
         "|r for additional options."
     );
-    Config:CreateMenu()
 end
