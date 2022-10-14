@@ -71,14 +71,16 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
         end
     end
     if TP:NumberOfTrueValues(fearClasses) > 0 then
-        SetMultiCastSpell(122, tremor);
+        --earth
+        SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
     else
-        SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
+        SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
     end
     if TP:NumberOfTrueValues(diseaseOrPoisonClasses) > 0 then
-        SetMultiCastSpell(123, cleansing);
+        --water
+        SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][3], cleansing);
     else
-        SetMultiCastSpell(123, TotemPredictorDB["prefferedWaterTotem"][2]);
+        SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][3], TotemPredictorDB["prefferedWaterTotem"][2]);
     end
 end
 
