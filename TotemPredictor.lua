@@ -19,7 +19,7 @@ eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
     ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSetTotemBar(self) end,
     -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
-    ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:UpdateScore(self) end,
+    ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:Reset(self) end,
 }
 -- local warriorFearTimer;
 
@@ -47,16 +47,6 @@ function TP:NumberOfTrueValues(t)
         end
     end
     return c;
-end
-
-function TP:UpdateScore()
-    local _, instanceType = IsInInstance();
-    if instanceType == "arena" then return end
-
-    -- if warriorFearTimer and not warriorFearTimer:IsCancelled() then
-    --     warriorFearTimer:Cancel();
-    -- end
-    TP:Reset();
 end
 
 function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
@@ -91,12 +81,18 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
 end
 
 function TP:Reset(self)
+    local _, instanceType = IsInInstance();
+    if instanceType == "arena" then return end
+
     for i in pairs(diseaseOrPoisonClasses) do
         diseaseOrPoisonClasses[i] = false;
     end
     for i in pairs(fearClasses) do
         fearClasses[i] = false;
     end
+    -- if warriorFearTimer and not warriorFearTimer:IsCancelled() then
+    --     warriorFearTimer:Cancel();
+    -- end
 end
 
 -- function TP:WarriorFearHandler(self, caster, ...)
