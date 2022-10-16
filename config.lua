@@ -36,7 +36,6 @@ core.totemBars = {
 --------------------------------------
 
 function Config:Toggle()
-    TPConfig:SetShown(not TPConfig:IsShown());
     InterfaceOptionsFrame_OpenToCategory(TPConfig);
     InterfaceOptionsFrame_OpenToCategory(TPConfig);
 end
@@ -123,12 +122,12 @@ function Config:CreateMenu()
         -- set marker ID & dropdown info
         for i = 1, 3 do
             if self:GetID() == i then
-                TotemPredictorDB["prefferedTotemBar"] = { core.totemBars[i], core.multiTotemSpellIDs[i], i };
+                TotemPredictorDB[markerIDString] = { core.totemBars[i], core.multiTotemSpellIDs[i], i };
                 break;
             end
         end
         Config:SetDropdownInfo(frame, self.value, self:GetID(), iconFrame);
-        iconFrame:SetTexture(GetSpellTexture(TotemPredictorDB["prefferedTotemBar"][2]) or nil);
+        iconFrame:SetTexture(GetSpellTexture(TotemPredictorDB[markerIDString][2]) or nil);
     end
 
     TPConfig.dropDownTitle = self:CreateDropdownTitle(dropDownTitleTwo, "Select Which TotemBar To Modify")
@@ -185,7 +184,6 @@ function Config:CreateMenu()
         ],
         TPConfig.dropDownIconThree, TotemPredictorDB["prefferedWaterTotem"][2])
 
-    TPConfig:Hide();
     return InterfaceOptions_AddCategory(TPConfig);
 end
 
