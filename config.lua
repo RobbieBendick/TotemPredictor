@@ -31,6 +31,10 @@ core.totemBars = {
     { 129, 130, 131, 132 } -- Spirits
 };
 
+--------------------------------------
+-- Config Functions
+--------------------------------------
+
 function Config:Toggle()
     TPConfig:SetShown(not TPConfig:IsShown());
     InterfaceOptionsFrame_OpenToCategory(TPConfig);
@@ -135,7 +139,7 @@ function Config:CreateMenu()
     -- First Dropdown
     local function Preferred_TotemBar_DropDown_OnClick(self, arg1, arg2, checked)
         return Config:CreateTotemBarDropdownOnClick(self, "prefferedTotemBar", TPConfig.dropDown,
-            TPConfig.dropDownIcon)
+            TPConfig.dropDownIcon);
     end
 
     function TotemPredictorDropDownMenu(frame, level, menuList)
@@ -185,12 +189,13 @@ function Config:CreateMenu()
     return InterfaceOptions_AddCategory(TPConfig);
 end
 
+-- init db
 function Config:Player_Login()
     if not TotemPredictorDB then
         TotemPredictorDB = {};
         TotemPredictorDB["prefferedEarthTotem"] = { 3, core.totems.earth["Stoneskin Totem"] }; --clickID, spellID
         TotemPredictorDB["prefferedWaterTotem"] = { 2, core.totems.water["Mana Spring Totem"] }; --clickID, spellID
-        TotemPredictorDB["prefferedTotemBar"] = { core.totemBars[1], core.multiTotemSpellIDs[1], 1 }; -- totem spellID table, multi-totem-drop spellID (call of the elements) etc, clickID
+        TotemPredictorDB["prefferedTotemBar"] = { core.totemBars[1], core.multiTotemSpellIDs[1], 1 }; -- totem spellID table, call of the elements spellID etc, clickID
     end
     Config:CreateMenu()
     DEFAULT_CHAT_FRAME:AddMessage(

@@ -12,29 +12,29 @@ TP = core.TP;
     ------------------------------------
 --]]
 
--- local warriorFearTimer;
 eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
     ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSetTotemBar(self) end,
     -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
-    ["UPDATE_BATTLEFIELD_SCORE"] = function(self) TP:UpdateScore(self) end,
+    ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:UpdateScore(self) end,
 }
-
+-- local warriorFearTimer;
 
 local fearClasses = {
     ["WARRIOR"] = false,
     ["WARLOCK"] = false,
     ["PRIEST"] = false,
 }
-
 local diseaseOrPoisonClasses = {
     ["ROGUE"] = false,
     ["DEATHKNIGHT"] = false,
     ["HUNTER"] = false,
 };
+local tremor, cleansing = 8143, 8170;
 
-local tremor, stoneskin, cleansing, manaSpring = 8143, 58753, 8170, 58774;
-
+--------------------------------------
+-- TP Functions
+--------------------------------------
 
 function TP:NumberOfTrueValues(t)
     local c = 0;
@@ -47,6 +47,9 @@ function TP:NumberOfTrueValues(t)
 end
 
 function TP:UpdateScore()
+    local _, instanceType = IsInInstance();
+    if instanceType == "arena" then return end
+
     -- if warriorFearTimer and not warriorFearTimer:IsCancelled() then
     --     warriorFearTimer:Cancel();
     -- end
@@ -99,14 +102,13 @@ end
 --     if spellID == intimShout and not UnitIsFriend(caster) then
 --         -- team only has 1 fear
 --         if TP:NumberOfTrueValuesInTable(fearClasses) < 2 then
---             SetMultiCastSpell(122, TotemPredictorDB["prefferedEarthTotem"][2]);
+--             SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
 --             warriorFearTimer = C_Timer.NewTimer(120, function()
---                 SetMultiCastSpell(122, tremor);
+--                 SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
 --             end);
 --         end
 --     end
 -- end
-
 
 local addonLoadedFrame = CreateFrame("Frame");
 addonLoadedFrame:RegisterEvent("ADDON_LOADED");
