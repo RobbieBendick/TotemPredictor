@@ -202,7 +202,7 @@ function Config:Player_Login()
         "|r by " ..
         "|cff69CCF0" ..
         GetAddOnMetadata(TPConfig.name, "Author") ..
-        "|r. Type |cff33ff99 " ..
+        "|r. Type |cff33ff99" ..
         SLASH_TOTEMPREDICTOR1 ..
         "|r for additional options."
     );

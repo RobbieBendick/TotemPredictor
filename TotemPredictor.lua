@@ -17,7 +17,7 @@ TP = core.TP;
 
 eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
-    ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSetTotemBar(self) end,
+    ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSpecsAndSetTotemBar(self) end,
     -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
     ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:Reset(self) end,
 }
@@ -32,6 +32,8 @@ local diseaseOrPoisonClasses = {
     ["ROGUE"] = false,
     ["DEATHKNIGHT"] = false,
     ["HUNTER"] = false,
+    ["SHADOW_PRIEST"] = false,
+    ["FERAL"] = false,
 };
 local tremor, cleansing = 8143, 8170;
 
@@ -49,11 +51,23 @@ function TP:NumberOfTrueValues(t)
     return c;
 end
 
-function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
+function TP:CheckEnemyTeamClassesAndSpecsAndSetTotemBar(self)
     local _, instanceType = IsInInstance();
     if instanceType ~= "arena" then return end
 
     for i = 1, 5 do
+        -- Check for spec-specific buffs
+        for j = 1, 30 do
+            local spellName = UnitBuff("arena" .. i, j);
+            if not spellName then break end
+            if spellName == "Vampiric Embrace" then
+                diseaseOrPoisonClasses["SHADOW_PRIEST"] = true;
+            end
+            if spellName == "Leader of the Pack" then
+                diseaseOrPoisonClasses["FERAL"] = true;
+            end
+        end
+        -- Check for classes
         local _, class = UnitClass("arena" .. i);
         for k in pairs(fearClasses) do
             if class == k then
@@ -66,6 +80,7 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
             end
         end
     end
+    -- Assign totems to the TotemBar when necessary
     if TP:NumberOfTrueValues(fearClasses) > 0 then
         --earth
         SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
