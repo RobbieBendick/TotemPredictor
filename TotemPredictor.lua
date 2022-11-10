@@ -15,20 +15,10 @@ TP = core.TP;
     ------------------------------------
 --]]
 
--- TODO: swap tremor when fears are on cooldown.
---       fix spec detection
-
-
-
-
-
-
-
-
 eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
-    ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSpecsAndSetTotemBar(self) end,
-    ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
+    ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSetTotemBar(self) end,
+    -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
     ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:Reset(self) end,
 }
 -- local warriorFearTimer;
@@ -43,7 +33,6 @@ local diseaseOrPoisonClasses = {
     ["DEATHKNIGHT"] = false,
     ["HUNTER"] = false,
     ["SHADOW_PRIEST"] = false,
-    ["FERAL"] = false,
 };
 local tremor, cleansing = 8143, 8170;
 
@@ -61,23 +50,22 @@ function TP:NumberOfTrueValues(t)
     return c;
 end
 
-function TP:CheckEnemyTeamClassesAndSpecsAndSetTotemBar(self)
+function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
     local _, instanceType = IsInInstance();
     if instanceType ~= "arena" then return end
 
     for i = 1, 5 do
-        -- Check for spec-specific buffs
-        for j = 1, 30 do
-            local spellName = UnitBuff("arena" .. i, j);
-            if not spellName then break end
-            if spellName == "Vampiric Embrace" then
-                diseaseOrPoisonClasses["SHADOW_PRIEST"] = true;
+        -- check for spriest
+        C_Timer.After(0.5, function()
+            for j = 1, 30 do
+                local spellName = UnitBuff("arena" .. i, j);
+                if not UnitExists("arena" .. i) then return end
+                if not spellName then return end
+                if spellName == "Vampiric Embrace" then
+                    diseaseOrPoisonClasses["SHADOW_PRIEST"] = true;
+                end
             end
-            if spellName == "Leader of the Pack" then
-                diseaseOrPoisonClasses["FERAL"] = true;
-            end
-        end
-        -- Check for classes
+        end)
         local _, class = UnitClass("arena" .. i);
         for k in pairs(fearClasses) do
             if class == k then
@@ -90,7 +78,6 @@ function TP:CheckEnemyTeamClassesAndSpecsAndSetTotemBar(self)
             end
         end
     end
-    -- Assign totems to the TotemBar when necessary
     if TP:NumberOfTrueValues(fearClasses) > 0 then
         --earth
         SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
@@ -115,23 +102,40 @@ function TP:Reset(self)
     for i in pairs(fearClasses) do
         fearClasses[i] = false;
     end
-    -- if warriorFearTimer and not warriorFearTimer:IsCancelled() then
-    --     warriorFearTimer:Cancel();
+    -- if warriorFearTimer then
+    --     if not warriorFearTimer:IsCancelled() then
+    --         warriorFearTimer:Cancel();
+    --     end
     -- end
 end
 
---         if TP:NumberOfTrueValuesInTable(fearClasses) < 2 then
---             SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
---             warriorFearTimer = C_Timer.NewTimer(120, function()
---                 SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
---             end);
---         end
-
-
--- function TP:WarriorFearHandler(self, ...)
---     local caster, _, spellID = ...;
+-- TODO: FIX THIS FUNCTION. (reads everything correctly but doesnt swap totems)
+-- function TP:WarriorFearHandler(self, caster, ...)
+--     local _, instanceType = IsInInstance();
+--     if instanceType ~= "arena" then return end
+--     if warriorFearTimer then if not warriorFearTimer:IsCancelled() then return end end
+--     local _, spellID = ...;
 --     local intimShout = 5246;
---     print("a")
+--     if spellID == intimShout and not UnitIsFriend("player", caster) then
+
+--         -- RAN THREE TIMES (nameplate1, arena1, etc)
+
+
+--         print("checking amount of fear classes");
+--         -- team only has 1 fear
+--         if TP:NumberOfTrueValues(fearClasses) < 2 then
+--             print("swapping totems")
+--             SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
+--             -- print("Starting timer")
+--             -- warriorFearTimer = C_Timer.NewTicker(120, function()
+--             --     print("TIMER FUNC");
+--             --     SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
+--             -- end, 1);
+--             -- C_Timer.After(0.1, function()
+--             --     print(warriorFearTimer:IsCancelled());
+--             -- end)
+--         end
+--     end
 -- end
 
 local addonLoadedFrame = CreateFrame("Frame");
