@@ -1,6 +1,7 @@
 ## Interface: 20501
 ## Author: Mageiden
 ## Title: TotemPredictor
+## Notes: Automatically places tremor or cleansing totem on your totembars based on enemy classes in arena.
 ## DefaultState: enabled
 ## SavedVariables: TotemPredictorDB
 

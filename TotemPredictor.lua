@@ -15,10 +15,20 @@ TP = core.TP;
     ------------------------------------
 --]]
 
+-- TODO: swap tremor when fears are on cooldown.
+--       fix spec detection
+
+
+
+
+
+
+
+
 eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
     ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSpecsAndSetTotemBar(self) end,
-    -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
+    ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
     ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:Reset(self) end,
 }
 -- local warriorFearTimer;
@@ -110,18 +120,18 @@ function TP:Reset(self)
     -- end
 end
 
--- function TP:WarriorFearHandler(self, caster, ...)
---     local _, spellID = ...;
---     local intimShout = 5246;
---     if spellID == intimShout and not UnitIsFriend(caster) then
---         -- team only has 1 fear
 --         if TP:NumberOfTrueValuesInTable(fearClasses) < 2 then
 --             SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
 --             warriorFearTimer = C_Timer.NewTimer(120, function()
 --                 SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
 --             end);
 --         end
---     end
+
+
+-- function TP:WarriorFearHandler(self, ...)
+--     local caster, _, spellID = ...;
+--     local intimShout = 5246;
+--     print("a")
 -- end
 
 local addonLoadedFrame = CreateFrame("Frame");
