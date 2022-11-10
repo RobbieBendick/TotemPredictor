@@ -124,8 +124,6 @@ end
 --             -- warriorFearTimer = C_Timer.NewTicker(120, function()
 --             --     SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
 --             -- end, 1);
---             -- C_Timer.After(0.1, function()
---             -- end)
 --         end
 --     end
 -- end
