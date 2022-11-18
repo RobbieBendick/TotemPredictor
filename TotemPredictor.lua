@@ -61,8 +61,10 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
                 local spellName = UnitBuff("arena" .. i, j);
                 if not UnitExists("arena" .. i) then return end
                 if not spellName then return end
+                if diseaseOrPoisonClasses["SHADOW_PRIEST"] then return end
                 if spellName == "Vampiric Embrace" then
                     diseaseOrPoisonClasses["SHADOW_PRIEST"] = true;
+                    return SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][3], cleansing);
                 end
             end
         end)
@@ -102,14 +104,12 @@ function TP:Reset(self)
     for i in pairs(fearClasses) do
         fearClasses[i] = false;
     end
-    -- if warriorFearTimer then
-    --     if not warriorFearTimer:IsCancelled() then
-    --         warriorFearTimer:Cancel();
-    --     end
+    -- if not warriorFearTimer:IsCancelled() then
+    --     warriorFearTimer:Cancel();
     -- end
 end
 
--- TODO: FIX THIS FUNCTION. (reads everything correctly but doesnt swap totems)
+-- TODO: FIX THIS FUNCTION. (reads everything correctly but doesnt swap totems for some reason)
 -- function TP:WarriorFearHandler(self, caster, ...)
 --     local _, instanceType = IsInInstance();
 --     if instanceType ~= "arena" then return end
@@ -117,13 +117,12 @@ end
 --     local _, spellID = ...;
 --     local intimShout = 5246;
 --     if spellID == intimShout and not UnitIsFriend("player", caster) then
---         -- RAN THREE TIMES (nameplate1, arena1, etc)
 --         -- team only has 1 fear
 --         if TP:NumberOfTrueValues(fearClasses) < 2 then
 --             SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
---             -- warriorFearTimer = C_Timer.NewTicker(120, function()
---             --     SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
---             -- end, 1);
+--             warriorFearTimer = C_Timer.NewTicker(120, function()
+--                 SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
+--             end, 1);
 --         end
 --     end
 -- end
