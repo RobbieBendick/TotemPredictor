@@ -119,7 +119,7 @@ function Config:CreateMenu()
     end
 
     function Config:CreateTotemBarDropdownOnClick(self, markerIDString, frame, iconFrame)
-        -- set marker ID & dropdown info
+        -- set DB & dropdown info
         for i = 1, 3 do
             if self:GetID() == i then
                 TotemPredictorDB[markerIDString] = { core.totemBars[i], core.multiTotemSpellIDs[i], i };
