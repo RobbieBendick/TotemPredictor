@@ -26,9 +26,9 @@ core.multiTotemSpellIDs = {
 }
 
 core.totemBars = {
-    { 121, 122, 123, 124 }, -- Elements
-    { 125, 126, 127, 128 }, -- Ancestors
-    { 129, 130, 131, 132 } -- Spirits
+    { 133, 134, 135, 136 }, -- Elements
+    { 137, 138, 139, 140 }, -- Ancestors
+    { 141, 142, 143, 144 } -- Spirits
 };
 
 --------------------------------------
@@ -54,7 +54,7 @@ function Config:CreateDropdown(relativeFrame, frameName)
 end
 
 function Config:CreateDropdownIcon(relativeFrame)
-    local dropIcon = TPConfig:CreateTexture(nil, "MEDIUM", nil, 2);
+    local dropIcon = TPConfig:CreateTexture(nil, "ARTWORK", nil, 2);
     dropIcon:SetParent(relativeFrame);
     dropIcon:SetPoint("LEFT", relativeFrame, 25, 2);
     dropIcon:SetSize(16, 16);
