@@ -9,9 +9,9 @@ TP = core.TP;
     SetMultiCastSpell
     ------------------------------------
              fire, earth, water, air
-    Elements  121,  122,  123, 124
-    Ancestors 125,	126,  127, 128
-    Spirits   129,  130,  131, 132
+    Elements  133,  134,  135, 136
+    Ancestors 137,	138,  139, 140
+    Spirits   141,  142,  143, 144
     ------------------------------------
 --]]
 
