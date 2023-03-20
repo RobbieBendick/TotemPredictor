@@ -5,7 +5,7 @@ local _, core = ...;
 local Config = core.Config;
 core.TP = {};
 TP = core.TP;
---[[ 
+--[[
     SetMultiCastSpell
     ------------------------------------
              fire, earth, water, air
@@ -14,25 +14,25 @@ TP = core.TP;
     Spirits   141,  142,  143, 144
     ------------------------------------
 --]]
-
 eventHandlerTable = {
     ["PLAYER_LOGIN"] = function(self) core.Config:Player_Login(self) end,
     ["ARENA_OPPONENT_UPDATE"] = function(self, ...) TP:CheckEnemyTeamClassesAndSetTotemBar(self) end,
     -- ["UNIT_SPELLCAST_SUCCEEDED"] = function(self, ...) TP:WarriorFearHandler(self, ...) end,
     ["ZONE_CHANGED_NEW_AREA"] = function(self) TP:Reset(self) end,
-}
+};
 -- local warriorFearTimer;
 
 local fearClasses = {
     ["WARRIOR"] = false,
     ["WARLOCK"] = false,
     ["PRIEST"] = false,
-}
+};
 local diseaseOrPoisonClasses = {
     ["ROGUE"] = false,
     ["DEATHKNIGHT"] = false,
     ["HUNTER"] = false,
     ["SHADOW_PRIEST"] = false,
+    ["FERAL_DRUID"] = false,
 };
 local tremor, cleansing = 8143, 8170;
 
@@ -64,6 +64,10 @@ function TP:CheckEnemyTeamClassesAndSetTotemBar(self)
                 if diseaseOrPoisonClasses["SHADOW_PRIEST"] then return end
                 if spellName == "Vampiric Embrace" then
                     diseaseOrPoisonClasses["SHADOW_PRIEST"] = true;
+                    return SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][3], cleansing);
+                end
+                if spellName == "Leader of the Pack" then
+                    diseaseOrPoisonClasses["FERAL_DRUID"] = true;
                     return SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][3], cleansing);
                 end
             end
@@ -104,28 +108,28 @@ function TP:Reset(self)
     for i in pairs(fearClasses) do
         fearClasses[i] = false;
     end
-    -- if not warriorFearTimer:IsCancelled() then
-    --     warriorFearTimer:Cancel();
-    -- end
 end
 
 -- TODO: FIX THIS FUNCTION. (reads everything correctly but doesnt swap totems for some reason)
--- function TP:WarriorFearHandler(self, caster, ...)
---     local _, instanceType = IsInInstance();
---     if instanceType ~= "arena" then return end
---     if warriorFearTimer then if not warriorFearTimer:IsCancelled() then return end end
---     local _, spellID = ...;
---     local intimShout = 5246;
---     if spellID == intimShout and not UnitIsFriend("player", caster) then
---         -- team only has 1 fear
---         if TP:NumberOfTrueValues(fearClasses) < 2 then
---             SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
---             warriorFearTimer = C_Timer.NewTicker(120, function()
---                 SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
---             end, 1);
---         end
---     end
--- end
+function TP:WarriorFearHandler(self, caster, ...)
+    local _, instanceType = IsInInstance();
+    if instanceType ~= "arena" then return end
+    if warriorFearTimer then if not warriorFearTimer:IsCancelled() then return end end
+    local _, spellID = ...;
+    local intimShout = 5246;
+    if not UnitIsFriend("player", caster) then
+        -- if team only has 1 fear
+        if TP:NumberOfTrueValues(fearClasses) < 2 then
+            -- swap to preffered earth totem
+            SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], TotemPredictorDB["prefferedEarthTotem"][2]);
+
+            -- set timer to swap back to tremor totem
+            warriorFearTimer = C_Timer.NewTicker(120, function()
+                SetMultiCastSpell(TotemPredictorDB["prefferedTotemBar"][1][2], tremor);
+            end, 1);
+        end
+    end
+end
 
 local addonLoadedFrame = CreateFrame("Frame");
 addonLoadedFrame:RegisterEvent("ADDON_LOADED");

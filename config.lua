@@ -17,18 +17,14 @@ core.totems = {
         ["Mana Spring Totem"] = 58774,
         ["Fire Resistance Totem"] = 58739,
     }
-}
+};
 
-core.multiTotemSpellIDs = {
-    66842,
-    66843,
-    66844,
-}
+core.multiTotemSpellIDs = { 66842, 66843, 66844 };
 
 core.totemBars = {
     { 133, 134, 135, 136 }, -- Elements
     { 137, 138, 139, 140 }, -- Ancestors
-    { 141, 142, 143, 144 } -- Spirits
+    { 141, 142, 143, 144 }  -- Spirits
 };
 
 --------------------------------------
@@ -75,8 +71,9 @@ function Config:InitDropdown(dropdown, menu, markerID, iconFrame, spellID)
     end
 end
 
-function Config:CreateMenu()
+function Config:Print(txt) DEFAULT_CHAT_FRAME:AddMessage("|cff33ff99TotemPredictor|r: " .. txt); end
 
+function Config:CreateMenu()
     TPConfig = CreateFrame("Frame", "TotemPredictorConfig", UIParent);
 
     TPConfig.name = "TotemPredictor";
@@ -84,7 +81,7 @@ function Config:CreateMenu()
     TPConfig.title = TPConfig:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
     TPConfig.title:SetParent(TPConfig);
     TPConfig.title:SetPoint("TOPLEFT", 16, -16);
-    TPConfig.title:SetText("|cff33ff99" .. TPConfig.name .. "|r");
+    TPConfig.title:SetText(TPConfig.name);
 
     function Config:CreateDropdownMenu(func, totemFamily)
         local info = UIDropDownMenu_CreateInfo();
@@ -191,8 +188,8 @@ end
 function Config:Player_Login()
     if not TotemPredictorDB then
         TotemPredictorDB = {};
-        TotemPredictorDB["prefferedEarthTotem"] = { 3, core.totems.earth["Stoneskin Totem"] }; --clickID, spellID
-        TotemPredictorDB["prefferedWaterTotem"] = { 2, core.totems.water["Mana Spring Totem"] }; --clickID, spellID
+        TotemPredictorDB["prefferedEarthTotem"] = { 3, core.totems.earth["Stoneskin Totem"] };        --clickID, spellID
+        TotemPredictorDB["prefferedWaterTotem"] = { 2, core.totems.water["Mana Spring Totem"] };      --clickID, spellID
         TotemPredictorDB["prefferedTotemBar"] = { core.totemBars[1], core.multiTotemSpellIDs[1], 1 }; -- totem spellID table, call of the elements spellID etc, clickID
     end
     Config:CreateMenu()
